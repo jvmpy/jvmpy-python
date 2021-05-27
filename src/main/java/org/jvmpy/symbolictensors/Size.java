@@ -13,7 +13,9 @@
  */
 package org.jvmpy.symbolictensors;
 
-import static org.jvmpy.python.Python.tuple;
+import com.codepoetics.protonpack.StreamUtils;
+import org.jvmpy.python.IntTuple;
+import org.jvmpy.python.Tuple;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,12 +24,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.jvmpy.python.IntTuple;
-import org.jvmpy.python.Tuple;
+import static org.jvmpy.python.Python.tuple;
 
-import com.codepoetics.protonpack.StreamUtils;
-
-public class Size extends IntTuple  {
+public class Size extends IntTuple {
 
 	private int numel;
 	public Size[] sizeComponents;
@@ -40,6 +39,8 @@ public class Size extends IntTuple  {
 		sizeComponents = new Size[0];
 		this.numel = 1;
 	}
+
+
 
 	public Size(Size... components) {
 		super(getDimensions(components));

@@ -170,7 +170,7 @@ public class SizeMatcher {
 	}
 	
 	private static Optional<SizeComponentMatch> isContainedWithinSecond(Size searchFor, Size source,
-			Size firstComponentPrefix) {
+                                                                        Size firstComponentPrefix) {
 		if (source.dimensionsString().contains(searchFor.dimensionsString())) {
 			int ind = source.dimensionsString().indexOf(searchFor.dimensionsString());
 			// throw new RuntimeException("Found:" + searchFor.dimensionsString() + " in " +
@@ -251,7 +251,7 @@ public class SizeMatcher {
 	}
 
 	private static Optional<SizeComponentMatch> isProductOfEndingOfFirst(Size searchFor, Size source,
-			Size secondComponentSuffix) {
+                                                                         Size secondComponentSuffix) {
 		int[] firstDimensions = source.dimensions();
 		Tuple<String> firstDimensionNames = source.dimensionNames();
 		SizeComponentMatch match = null;
@@ -318,7 +318,7 @@ public class SizeMatcher {
 		}
 
 		public SizeComponentMatch(Size firstComponentPrefix, Size shared, Size secondComponentSuffix,
-				Size secondComponentPrefix) {
+                                  Size secondComponentPrefix) {
 			this.firstComponentPrefix = firstComponentPrefix;
 			this.secondComponentPrefix = Optional.of(secondComponentPrefix);
 			this.secondComponentSuffix = secondComponentSuffix;
