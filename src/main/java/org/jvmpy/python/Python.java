@@ -62,14 +62,18 @@ public class Python {
 		return new IntTuple(first, remaining);
 	}
 
+	public static <T> Iterable<T> enumerate(Iterable<T> iterable) {
+		return iterable;
+	}
+
 	public static <T> Iterable<Tuple<?>> enumerate(List<T> components) {
 		return StreamUtils.zipWithIndex(components.stream()).map((e) -> new ObjectTuple((int)e.getIndex(), e.getValue())).collect(Collectors.toList());
 	}
-	
+
 	public static <T> Iterable<Tuple<?>> enumerate(List<T> components, int index) {
 		return StreamUtils.zipWithIndex(components.subList(index, components.size()).stream()).map(e -> new ObjectTuple((int)e.getIndex(), e.getValue())).collect(Collectors.toList());
 	}
-	
+
 	public static <T> Iterable<Indexed<T>> enumerate(Supplier<Stream<T>> componentStreamSupplier, int index) {
 		return () -> StreamUtils.zipWithIndex(componentStreamSupplier.get()).filter(e -> e.getIndex() >= index).map(e -> IndexedImpl.create(e.getValue(), (int)e.getIndex())).iterator();
 	}
@@ -97,6 +101,10 @@ public class Python {
 	
 	public static <T> int len(T[] a) {
 		return a.length;
+	}
+
+	public static <T> int len(Lengthable a) {
+		return a.len();
 	}
 	
 	public static <T> int len(Tuple<T> a) {

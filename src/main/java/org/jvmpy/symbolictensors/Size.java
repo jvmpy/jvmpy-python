@@ -26,7 +26,7 @@ import java.util.stream.IntStream;
 
 import static org.jvmpy.python.Python.tuple;
 
-public class Size extends IntTuple {
+public class Size extends IntTuple  {
 
 	private int numel;
 	public Size[] sizeComponents;
@@ -39,8 +39,6 @@ public class Size extends IntTuple {
 		sizeComponents = new Size[0];
 		this.numel = 1;
 	}
-
-
 
 	public Size(Size... components) {
 		super(getDimensions(components));
@@ -207,7 +205,7 @@ public class Size extends IntTuple {
 		}
 	}
 
-	private List<Integer> getDimensions() {
+	public List<Integer> getDimensions() {
 		if (this.components == null || this.components.length == 0) {
 			return new ArrayList<>();
 		}

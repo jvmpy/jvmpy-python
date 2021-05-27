@@ -1,6 +1,6 @@
 package org.jvmpy.symbolictensors;
 
-import org.jvmpy.python.Tuple;
+import static org.jvmpy.python.Python.tuple;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,13 +9,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.jvmpy.python.Python.tuple;
+import org.jvmpy.python.Tuple;
+import org.jvmpy.symbolictensors.Size;
 
 /**
  *  Prototype SizeMatcher - all the ugly code re: size matching in one class to be refactored - TODO
  */
 public class SizeMatcher {
-	
+
 	public static Size matmul(Size firstSize, Size secondSize) {
 		Optional<SizeComponentMatch> match = getMatMulMatches(firstSize, secondSize);
 		if (match.isPresent()) {
@@ -32,7 +33,7 @@ public class SizeMatcher {
 
 		throw new IllegalArgumentException("Unable to match sizes");
 	}
-	
+
 	public static boolean isSizeMatch(Size first, Size second) {
 		List<Size> firsts = getAllAlternates(first);
 		List<Size> seconds = getAllAlternates(second);
@@ -44,17 +45,17 @@ public class SizeMatcher {
 						if (isDirectNamesMatch(first, second)) {
 							return true;
 						}
-					} 
+					}
 				}
 			}
 		}
 		return false;
 	}
-	
+
 	private static boolean isDirectDimensionsMatch(Size first, Size second) {
 		return IntStream.of(first.dimensions()).boxed().collect(Collectors.toList()).equals(IntStream.of(first.dimensions()).boxed().collect(Collectors.toList()));
 	}
-	
+
 	private static boolean isDirectNamesMatch(Size first, Size second) {
 		List<String> firstNames = toScopeIndependentNamesList(first.dimensionNames().asList());
 		List<String> secondNames = toScopeIndependentNamesList(second.dimensionNames().asList());
@@ -62,10 +63,10 @@ public class SizeMatcher {
 		if (firstNames.size() == secondNames.size()) {
 			removeNones(firstNames, secondNames);
 		}
-		
+
 		boolean match = firstNames.equals(secondNames);
 		if (!match) {
-			
+
 			if (secondNames.size() >= 2 && secondNames.get(0).equals("example") && firstNames.equals(Arrays.asList("example", "feature"))) {
 				return true;
 			} else if (firstNames.size() >= 2 && firstNames.get(0).equals("example") && secondNames.equals(Arrays.asList("example", "feature"))) {
@@ -78,14 +79,14 @@ public class SizeMatcher {
 				return true;
 			} else if (firstNames.size() >= 2 && firstNames.get(0).equals("feature") && secondNames.equals(Arrays.asList("feature", "feature"))) {
 				return true;
-			} 
+			}
 			return false;
 		} else {
 			return true;
 		}
 	}
-	
-	
+
+
 	private static void removeNones(List<String> firstNames, List<String> secondNames) {
 		List<String> firsts = new ArrayList<>();
 		List<String> seconds = new ArrayList<>();
@@ -109,14 +110,14 @@ public class SizeMatcher {
 			s = s.replaceAll("output_", "");
 			returnValues.add(s);
 		}
-		
+
 		return returnValues;
 	}
-	
+
 	private static List<Size> getAllAlternates(Size size) {
 		return populateAllAlternates(size, new ArrayList<>());
 	}
-	
+
 	private static List<Size> populateAllAlternates(Size size, List<Size> allAlternates) {
 		allAlternates.add(size);
 		for (Size s : size.getAlternates()) {
@@ -168,9 +169,9 @@ public class SizeMatcher {
 			return Optional.of(bestMatch);
 		}
 	}
-	
+
 	private static Optional<SizeComponentMatch> isContainedWithinSecond(Size searchFor, Size source,
-                                                                        Size firstComponentPrefix) {
+																		Size firstComponentPrefix) {
 		if (source.dimensionsString().contains(searchFor.dimensionsString())) {
 			int ind = source.dimensionsString().indexOf(searchFor.dimensionsString());
 			// throw new RuntimeException("Found:" + searchFor.dimensionsString() + " in " +
@@ -194,7 +195,7 @@ public class SizeMatcher {
 						prefixComponentsString = prefixComponentsString + ", " + s.dimensionsString();
 					}
 				}
-								
+
 				int from = firstComponentsCount + prefixComponents.size();
 				if (from < secondDecomposed.size()) {
 					Size remaining = new Size(secondDecomposed.subList(from, secondDecomposed.size()));
@@ -212,7 +213,7 @@ public class SizeMatcher {
 			return Optional.empty();
 		}
 	}
-	
+
 	private static List<Size> getTwoSplits(Size size) {
 		List<Size> decomposed = size.decompose();
 		List<Size> twoSplits = new ArrayList<>();
@@ -227,7 +228,7 @@ public class SizeMatcher {
 	}
 
 	private static Optional<SizeComponentMatch> isEndingOfFirst(Size searchFor, Size source, Size secondComponentSuffix) {
-			
+
 		if (source.dimensionsString().endsWith(searchFor.dimensionsString())) {
 			int ind = source.dimensionsString().lastIndexOf(searchFor.dimensionsString());
 			int ind2 = 0;
@@ -251,7 +252,7 @@ public class SizeMatcher {
 	}
 
 	private static Optional<SizeComponentMatch> isProductOfEndingOfFirst(Size searchFor, Size source,
-                                                                         Size secondComponentSuffix) {
+																		 Size secondComponentSuffix) {
 		int[] firstDimensions = source.dimensions();
 		Tuple<String> firstDimensionNames = source.dimensionNames();
 		SizeComponentMatch match = null;
@@ -284,15 +285,15 @@ public class SizeMatcher {
 						prefixComponents.add(s);
 						prefixComponentsString = prefixComponentsString + ", " + s.dimensionsString();
 					}
-				}				
+				}
 				Size alternate = new Size(new Size(prefixComponents), firstEndingProductSize);
 				if (!prefixComponents.isEmpty()) {
 					if (!source.getAlternates().contains(alternate)) {
 						source.getAlternates().add(alternate);
 					}
 
-				match = new SizeComponentMatch(new Size(prefixComponents), firstEndingProductSize,
-						secondComponentSuffix);
+					match = new SizeComponentMatch(new Size(prefixComponents), firstEndingProductSize,
+							secondComponentSuffix);
 				}
 
 
@@ -318,7 +319,7 @@ public class SizeMatcher {
 		}
 
 		public SizeComponentMatch(Size firstComponentPrefix, Size shared, Size secondComponentSuffix,
-                                  Size secondComponentPrefix) {
+								  Size secondComponentPrefix) {
 			this.firstComponentPrefix = firstComponentPrefix;
 			this.secondComponentPrefix = Optional.of(secondComponentPrefix);
 			this.secondComponentSuffix = secondComponentSuffix;
