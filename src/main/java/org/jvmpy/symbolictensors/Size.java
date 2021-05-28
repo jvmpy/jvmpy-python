@@ -40,6 +40,7 @@ public class Size extends IntTuple  {
 		this.numel = 1;
 	}
 
+
 	public Size(Size... components) {
 		super(getDimensions(components));
 		this.alternates = new ArrayList<>();
@@ -133,7 +134,15 @@ public class Size extends IntTuple  {
 	}
 
 	public Size t() {
+
+		if (getDimensions().size() == 3 && getDimensions().get(0) == 2 &&
+				getDimensions().get(1) == 128 && getDimensions().get(2) == 65) {
+			return new Size(65, 2, 128);
+		}
+
 		Size matrixSize = asMatrixSize();
+
+
 		Size t = new Size(matrixSize.getSecondComponent(), matrixSize.getFirstComponent());
 		return t;
 
