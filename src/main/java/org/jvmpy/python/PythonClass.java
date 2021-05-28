@@ -40,6 +40,7 @@ public abstract class PythonClass<M> {
 			populateAllFields(fieldList, self().getClass());
 
 			for (Field field : fieldList) {
+				System.out.println(field.getName());
 				field.setAccessible(true);
 				if (fieldClass.isAssignableFrom(field.getType())) {
 					T value = (T)field.get(self());
@@ -57,6 +58,8 @@ public abstract class PythonClass<M> {
 			return fields;
 
 		} catch (Exception e) {
+			System.out.println(this.getClass());
+			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}
