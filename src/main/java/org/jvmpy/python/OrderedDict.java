@@ -13,9 +13,9 @@
  */
 package org.jvmpy.python;
 
-import java.util.ArrayList;
-
 import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.ArrayList;
 
 public class OrderedDict<T> extends ArrayList<Pair<String, T>>  {
 

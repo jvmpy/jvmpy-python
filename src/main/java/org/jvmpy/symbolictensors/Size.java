@@ -65,6 +65,11 @@ public class Size extends IntTuple  {
 
 	public Size(int... components) {
 		this(IntStream.of(components).mapToObj(i -> new Size(i)).toArray(i -> new Size[i]));
+		if (components.length == 2) {
+			if (components[0] == 65 && components[1] == 2) {
+				throw new RuntimeException();
+			}
+		}
 	}
 
 	public Size(int numel) {
@@ -134,18 +139,8 @@ public class Size extends IntTuple  {
 	}
 
 	public Size t() {
-
-		if (getDimensions().size() == 3 && getDimensions().get(0) == 2 &&
-				getDimensions().get(1) == 128 && getDimensions().get(2) == 65) {
-			return new Size(65, 2, 128);
-		}
-
 		Size matrixSize = asMatrixSize();
-
-
-		Size t = new Size(matrixSize.getSecondComponent(), matrixSize.getFirstComponent());
-		return t;
-
+		return new  Size(matrixSize.getSecondComponent(), matrixSize.getFirstComponent());
 	}
 
 	public Size asMatrixSize() {
@@ -262,9 +257,4 @@ public class Size extends IntTuple  {
 	public List<Size> getAlternates() {
 		return alternates;
 	}
-
-	public Size matmul(Size other) {
-		return SizeMatcher.matmul(this, other);
-	}
-
 }

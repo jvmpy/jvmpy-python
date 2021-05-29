@@ -13,6 +13,8 @@
  */
 package org.jvmpy.python;
 
+import com.codepoetics.protonpack.StreamUtils;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,8 +23,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
-import com.codepoetics.protonpack.StreamUtils;
 
 /**
  * Provides methods that can be statically imported
