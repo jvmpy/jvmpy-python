@@ -257,4 +257,9 @@ public class Size extends IntTuple  {
 	public List<Size> getAlternates() {
 		return alternates;
 	}
+
+	public Size matmul(Size other) {
+		Size[] results = MultiplicationRules.matmul(this, other);
+		return results[results.length - 1];
+	}
 }
