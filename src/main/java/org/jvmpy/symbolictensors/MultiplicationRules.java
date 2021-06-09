@@ -88,7 +88,7 @@ public class MultiplicationRules {
         return new Size(newDims);
     }
 
-    private static Size getBroadcast(Size first, Size second) {
+    public static Size getBroadcast(Size first, Size second) {
 
         if (first.dimensions().length >= 1 && second.dimensions().length >= 1) {
             int[] res = new int[Math.max(first.dimensions().length, second.dimensions().length)];
